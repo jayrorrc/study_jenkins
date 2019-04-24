@@ -1,0 +1,27 @@
+---
+- name: Add jenkins apt repository
+  apt_repository:
+    repo: "{{jenkins.repo_URL}}"
+    state: present
+    update_cache: yes
+  become: true
+- name: Import GPG Key
+  apt_key:
+    url: "{{jenkins.gpg_key}}"
+    state: present
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: latest
+- name: Change Jenkins JAVA options
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_JAVA_OPTIONS='
+    line: "JENKINS_JAVA_OPTIONS={{ jenkins.JAVA_OPTIONS }}"
+  become: yes
+- name: Start Jenkins service and enable on boot
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+  become: yes
