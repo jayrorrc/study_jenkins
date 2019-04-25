@@ -47,3 +47,14 @@
     state: started
     enabled: yes
   become: yes
+- name: 'Change UpdateCenter url'
+  replace:
+    path: /var/lib/jenkins/hudson.model.UpdateCenter.xml
+    regexp: "https"
+    replace: "http"
+  become: yes
+- name: Restart jenkins
+  systemd:
+    name: jenkins
+    state: restarted
+  become: yes
