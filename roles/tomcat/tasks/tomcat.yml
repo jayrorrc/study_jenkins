@@ -2,6 +2,7 @@
 - name: 'Install dependece packages'
   apt:
     name:
+        - 'git'
         - 'systemd'
         - 'apache2'
         - 'maven'

@@ -35,6 +35,12 @@
     regexp: '^JENKINS_JAVA_OPTIONS='
     line: "JENKINS_JAVA_OPTIONS={{ jenkins.JAVA_OPTIONS }}"
   become: yes
+- name: 'Change UpdateCenter url'
+  replace:
+    path: /var/lib/jenkins/hudson.model.UpdateCenter.xml
+    regexp: "https"
+    replace: "http"
+  become: yes
 - name: 'Create a systemd to jenkins'
   template:
     src: 'templates/jenkins.service.j2'
@@ -44,17 +50,11 @@
   systemd:
     daemon_reload: yes
     name: jenkins
-    state: started
+    state: restarted
     enabled: yes
   become: yes
-- name: 'Change UpdateCenter url'
-  replace:
-    path: /var/lib/jenkins/hudson.model.UpdateCenter.xml
-    regexp: "https"
-    replace: "http"
-  become: yes
-- name: Restart jenkins
-  systemd:
-    name: jenkins
-    state: restarted
-  become: yes
+# - name: Restart jenkins
+#   systemd:
+#     name: jenkins
+#     state: reload
+#   become: yes
