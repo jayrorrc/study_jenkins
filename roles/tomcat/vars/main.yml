@@ -1,0 +1,8 @@
+---
+# vars file for tomcat
+tomcat:
+  repo_url: http://mirror.nbtelecom.com.br/apache/tomcat/tomcat-9/v9.0.19/bin/apache-tomcat-9.0.19.tar.gz
+  latest: apache-tomcat-9.0.19
+
+java:
+  home: /usr/lib/jvm/java-8-openjdk-amd64
