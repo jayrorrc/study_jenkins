@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 	v.memory = 1024
   end
 
-  config.vm.define "wordpress" do |m|
+  config.vm.define "jenkins" do |m|
     m.vm.network "private_network", ip: "172.17.177.50"
   end
 end

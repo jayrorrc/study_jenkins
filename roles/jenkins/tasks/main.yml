@@ -1,4 +1,3 @@
 ---
 # tasks file for jenkins
-- include: jenkins.yml
-  tag: jenkins
+- import_tasks: jenkins.yml

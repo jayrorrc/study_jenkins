@@ -1,21 +1,24 @@
 ---
 - name: Add jenkins apt repository
   apt_repository:
-    repo: "{{jenkins.repo_URL}}"
+    repo: "{{ jenkins.repo_URL }}"
     state: present
     update_cache: yes
   become: true
 - name: Import GPG Key
   apt_key:
-    url: "{{jenkins.gpg_key}}"
+    url: "{{ jenkins.gpg_key }}"
     state: present
+  become: yes
 - name: Install Jenkins
   apt:
     name: jenkins
     state: latest
+    update_cache: yes
+  become: yes
 - name: Change Jenkins JAVA options
   lineinfile:
-    path: /etc/sysconfig/jenkins
+    path: /etc/default/jenkins
     regexp: '^JENKINS_JAVA_OPTIONS='
     line: "JENKINS_JAVA_OPTIONS={{ jenkins.JAVA_OPTIONS }}"
   become: yes

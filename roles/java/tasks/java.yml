@@ -1,10 +1,17 @@
+---
+- name: Add java apt repository
+  apt_repository:
+    repo: "{{ java.repo_URL }}"
+    state: present
+    update_cache: yes
+  become: yes
 - name: Install JDK 8
   apt:
-    name: "{{java.VERSION}}"
+    name: "{{ java.VERSION }}"
     state: latest
-  bacome: yes
+  become: yes
 - name: Correct the alternatives to change default Java version.
   alternatives:
     name: java
-    link: /bin/java
-    path: "{{java.ALTERNATIVES}}"
+    path: "{{ java.ALTERNATIVES }}"
+  become: yes
