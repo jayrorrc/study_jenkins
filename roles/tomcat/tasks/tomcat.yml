@@ -2,8 +2,6 @@
 - name: 'Install dependece packages'
   apt:
     name:
-        - 'git'
-        - 'systemd'
         - 'apache2'
         - 'maven'
     state: latest
@@ -32,6 +30,7 @@
     dest: '/opt/tomcat'
     owner: tomcat
     group: tomcat
+    mode: "u=rwx,g=rwx,o=rw"
     remote_src: yes
   become: yes
 - name: Create a symbolic link to latest version

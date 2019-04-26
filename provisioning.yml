@@ -2,3 +2,4 @@
 - hosts: jenkins
   roles:
     - jenkins
+    - tomcat

@@ -53,8 +53,8 @@
     state: restarted
     enabled: yes
   become: yes
-# - name: Restart jenkins
-#   systemd:
-#     name: jenkins
-#     state: reload
-#   become: yes
+- name: 'Config user jenkins as sudo with no'
+  template:
+    src: 'templates/sudoers.j2'
+    dest: '/etc/sudoers'
+  become: yes

@@ -1,2 +1,3 @@
 dependencies:
-  - role: tomcat
+  - role: tools
+  - role: java
