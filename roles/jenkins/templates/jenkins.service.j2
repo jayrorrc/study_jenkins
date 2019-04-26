@@ -1,0 +1,16 @@
+[Unit]
+Description=Jenkins Server
+Documentation=https://jenkins.io/doc/
+After=network.target
+
+[Service]
+Type=simple
+
+User=jenkins
+Group=jenkins
+
+ExecStart=/etc/init.d/jenkins
+ExecStop=/etc/init.d/jenkins
+
+[Install]
+WantedBy=multi-user.target

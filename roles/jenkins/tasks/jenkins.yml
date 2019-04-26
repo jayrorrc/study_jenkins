@@ -1,0 +1,60 @@
+---
+- name: Create the group jenkins
+  group:
+    name: jenkins
+    state: present
+  become: yes
+- name: Create the user jenkins
+  user:
+    name: jenkins
+    group: jenkins
+    home: /opt/jenkins
+    create_home: yes
+    shell: /bin/false
+  become: yes
+- name: Add jenkins apt repository
+  apt_repository:
+    repo: "{{ jenkins.repo_URL }}"
+    state: present
+    update_cache: yes
+  become: true
+- name: Import GPG Key
+  apt_key:
+    url: "{{ jenkins.gpg_key }}"
+    state: present
+  become: yes
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: latest
+    update_cache: yes
+  become: yes
+- name: Change Jenkins JAVA options
+  lineinfile:
+    path: /etc/default/jenkins
+    regexp: '^JENKINS_JAVA_OPTIONS='
+    line: "JENKINS_JAVA_OPTIONS={{ jenkins.JAVA_OPTIONS }}"
+  become: yes
+- name: 'Change UpdateCenter url'
+  replace:
+    path: /var/lib/jenkins/hudson.model.UpdateCenter.xml
+    regexp: "https"
+    replace: "http"
+  become: yes
+- name: 'Create a systemd to jenkins'
+  template:
+    src: 'templates/jenkins.service.j2'
+    dest: '/etc/systemd/system/jenkins.service'
+  become: yes
+- name: Start jenkins service and enable on boot
+  systemd:
+    daemon_reload: yes
+    name: jenkins
+    state: restarted
+    enabled: yes
+  become: yes
+- name: 'Config user jenkins as sudo with no'
+  template:
+    src: 'templates/sudoers.j2'
+    dest: '/etc/sudoers'
+  become: yes

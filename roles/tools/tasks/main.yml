@@ -1,0 +1,11 @@
+---
+# tasks file for tools
+- name: Install some nice tools
+  apt:
+    name:
+      - git
+      - systemd
+      - wget
+    state: latest
+  become: yes
+- import_tasks: oh-my-zsh.yml

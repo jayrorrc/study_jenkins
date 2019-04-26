@@ -1,0 +1,10 @@
+---
+- name: Install zsh
+  apt:
+    name:
+      - zsh
+    state: latest
+  become: yes
+- name: Install Oh-My-Zsh
+  shell: sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+  become: yes

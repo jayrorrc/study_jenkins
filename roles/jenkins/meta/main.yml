@@ -1,0 +1,3 @@
+dependencies:
+  - role: tools
+  - role: java
