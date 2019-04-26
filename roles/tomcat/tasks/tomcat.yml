@@ -22,11 +22,11 @@
 - name: Download tomcat latest version
   get_url:
     url: "{{ tomcat.repo_url }}"
-    dest: '/tmp/tomcat.tar.gz'
+    dest: "/tmp/{{ tomcat.latest }}.tar.gz"
   become: yes
 - name: 'Unpak the tomcat'
   unarchive:
-    src: '/tmp/tomcat.tar.gz'
+    src: "/tmp/{{ tomcat.latest }}.tar.gz"
     dest: '/opt/tomcat'
     owner: tomcat
     group: tomcat
@@ -62,6 +62,6 @@
   systemd:
     daemon_reload: yes
     name: tomcat
-    state: started
+    state: restarted
     enabled: yes
   become: yes
