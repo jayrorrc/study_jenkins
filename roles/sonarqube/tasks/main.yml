@@ -1,0 +1,44 @@
+---
+# tasks file for sonarqube
+- name: Download sonar latest version
+  get_url:
+    url: "{{ sonar.repo_url }}"
+    dest: "/tmp/{{ sonar.latest }}.zip"
+  become: yes
+- name: Create sonar directory
+  file:
+    path: /opt/sonar
+    state: directory
+    owner: "{{ sonar.user}}"
+    group: "{{ sonar.user}}"
+    mode: "u=rwx,g=rwx,o=rwx"
+  become: yes
+- name: 'Unpak the sonar'
+  unarchive:
+    src: "/tmp/{{ sonar.latest }}.zip"
+    dest: '/opt/sonar'
+    owner: "{{ sonar.user}}"
+    group: "{{ sonar.user}}"
+    mode: "u=rwx,g=rwx,o=rwx"
+    remote_src: yes
+  become: yes
+- name: Create a symbolic link to latest version
+  file:
+    src: "/opt/sonar/{{ sonar.latest }}"
+    dest: /opt/sonar/latest
+    owner: "{{ sonar.user}}"
+    group: "{{ sonar.user}}"
+    state: link
+  become: yes
+- name: 'Create a systemd to sonar'
+  template:
+    src: templates/sonar.service.j2
+    dest: /etc/systemd/system/sonar.service
+  become: yes
+- name: Start sonar service and enable on boot
+  systemd:
+    daemon_reload: yes
+    name: sonar
+    state: restarted
+    enabled: yes
+  become: yes

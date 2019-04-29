@@ -63,6 +63,7 @@
     src: templates/tomcat-users.xml.j2
     dest: /opt/tomcat/latest/conf/tomcat-users.xml
   become: yes
+  notify: Restart tomcat
 - name: Start tomcat service and enable on boot
   systemd:
     daemon_reload: yes
