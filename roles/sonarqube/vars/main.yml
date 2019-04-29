@@ -1,0 +1,7 @@
+---
+# vars file for sonarqube
+sonar:
+  repo_url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.7.zip
+  latest: sonarqube-7.7
+  user: vagrant
+  lib: sonar-application-7.7.jar

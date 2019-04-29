@@ -1,0 +1,8 @@
+---
+# vars file for tomcat
+tomcat:
+  repo_url: http://us.mirrors.quenda.co/apache/tomcat/tomcat-7/v7.0.94/bin/apache-tomcat-7.0.94.tar.gz
+  latest: apache-tomcat-7.0.94
+
+java:
+  home: /usr/lib/jvm/java-8-openjdk-amd64

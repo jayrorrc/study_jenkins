@@ -1,0 +1,7 @@
+---
+- hosts: jenkins
+  roles:
+    - jenkins
+    - tomcat
+    - phantomjs
+    - sonarqube

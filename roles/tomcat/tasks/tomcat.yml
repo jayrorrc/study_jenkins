@@ -1,0 +1,73 @@
+---
+- name: 'Install dependece packages'
+  apt:
+    name:
+        - 'apache2'
+        - 'maven'
+    state: latest
+  become: yes
+- name: Create the group tomcat
+  group:
+    name: tomcat
+    state: present
+  become: yes
+- name: Create the user tomcat
+  user:
+    name: tomcat
+    group: tomcat
+    home: /opt/tomcat
+    create_home: yes
+    shell: /bin/false
+  become: yes
+- name: Download tomcat latest version
+  get_url:
+    url: "{{ tomcat.repo_url }}"
+    dest: "/tmp/{{ tomcat.latest }}.tar.gz"
+  become: yes
+- name: 'Unpak the tomcat'
+  unarchive:
+    src: "/tmp/{{ tomcat.latest }}.tar.gz"
+    dest: '/opt/tomcat'
+    owner: tomcat
+    group: tomcat
+    mode: "u=rwx,g=rwx,o=rw"
+    remote_src: yes
+  become: yes
+- name: Create a symbolic link to latest version
+  file:
+    src: "/opt/tomcat/{{ tomcat.latest }}"
+    dest: /opt/tomcat/latest
+    owner: tomcat
+    group: tomcat
+    state: link
+  become: yes
+- name: 'Change tomcat access port'
+  replace:
+    path: /opt/tomcat/latest/conf/server.xml
+    regexp: "8080"
+    replace: "8081"
+  become: yes
+- name: Make the scripts in folder bin turn executables
+  file:
+    path: /opt/tomcat/latest/bin/*.sh
+    state: touch
+    mode: "u+x,g+x,o+x"
+  become: yes
+- name: 'Create a systemd to tomcat'
+  template:
+    src: templates/tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+  become: yes
+- name: 'Add user jenkins'
+  template:
+    src: templates/tomcat-users.xml.j2
+    dest: /opt/tomcat/latest/conf/tomcat-users.xml
+  become: yes
+  notify: Restart tomcat
+- name: Start tomcat service and enable on boot
+  systemd:
+    daemon_reload: yes
+    name: tomcat
+    state: restarted
+    enabled: yes
+  become: yes

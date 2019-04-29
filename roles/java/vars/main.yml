@@ -1,0 +1,6 @@
+---
+# vars file for java
+java:
+  repo_URL: ppa:openjdk-r/ppa
+  VERSION: openjdk-8-jdk
+  ALTERNATIVES: /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java
