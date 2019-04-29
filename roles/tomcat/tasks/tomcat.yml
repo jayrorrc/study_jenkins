@@ -55,8 +55,13 @@
   become: yes
 - name: 'Create a systemd to tomcat'
   template:
-    src: 'templates/tomcat.service.j2'
-    dest: '/etc/systemd/system/tomcat.service'
+    src: templates/tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+  become: yes
+- name: 'Add user jenkins'
+  template:
+    src: templates/tomcat-users.xml.j2
+    dest: /opt/tomcat/latest/conf/tomcat-users.xml
   become: yes
 - name: Start tomcat service and enable on boot
   systemd:

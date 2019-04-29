@@ -1,0 +1,32 @@
+---
+# tasks file for phantomjs
+- name: Download phantomjs latest version
+  get_url:
+    url: "{{ phantomjs.repo_url }}"
+    dest: "/tmp/{{ phantomjs.latest }}.tar.gz"
+  become: yes
+- name: Create phantomjs directory
+  file:
+    path: /opt/phantomjs
+    state: directory
+    owner: "{{ phantomjs.user}}"
+    group: "{{ phantomjs.user}}"
+    mode: "u=rwx,g=rwx,o=rwx"
+  become: yes
+- name: 'Unpak the phantomjs'
+  unarchive:
+    src: "/tmp/{{ phantomjs.latest }}.tar.gz"
+    dest: '/opt/phantomjs'
+    owner: "{{ phantomjs.user}}"
+    group: "{{ phantomjs.user}}"
+    mode: "u=rwx,g=rwx,o=rwx"
+    remote_src: yes
+  become: yes
+- name: Create a symbolic link to latest version
+  file:
+    src: "/opt/phantomjs/{{ phantomjs.latest }}"
+    dest: /opt/phantomjs/latest
+    owner: "{{ phantomjs.user}}"
+    group: "{{ phantomjs.user}}"
+    state: link
+  become: yes
